@@ -8,6 +8,7 @@ import Doctor from "../models/doctor.model.js";
 const verifyToken = async (req, res, next, allowedRoles) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
+
    
     if (!token)
       return res
@@ -17,12 +18,12 @@ const verifyToken = async (req, res, next, allowedRoles) => {
 
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
     let user = null;
     
 
-    if (allowedRoles.includes("student"))
-      user = await Student.findById(decoded.id);
+    if (allowedRoles.includes("student")){
+        user = await Student.findById(decoded.studentId);
+    }
     if (allowedRoles.includes("faculty") && !user)
       user = await Faculty.findById(decoded.id);
     if (allowedRoles.includes("admin") && !user)
@@ -80,3 +81,8 @@ export const verifyAdmin = (req, res, next) =>
 // Middleware to allow only Faculty & Admin
 export const verifyFacultyOrAdmin = (req, res, next) =>
   verifyToken(req, res, next, ["faculty", "admin"]);
+
+
+// Middleware for booking creation (only Students and Faculty can book)
+export const verifyStudentOrFaculty = (req, res, next) =>
+  verifyToken(req, res, next, ["student", "faculty"]);

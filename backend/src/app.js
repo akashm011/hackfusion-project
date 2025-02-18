@@ -6,6 +6,8 @@ import facultyRouter from "../src/routes/faculty.routes.js";
 import adminRouter from "../src/routes/admin.routes.js";
 import doctorRouter from "../src/routes/doctor.routes.js";
 import cheatingRouter from '../src/routes/cheating.routes.js'
+import bookingRouter from '../src/routes/booking.routes.js'
+import facilityRoutes from '../src/routes/facility.routes.js';
 
 const app = express();
 
@@ -27,4 +29,6 @@ app.use("/api/faculty-login", facultyRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/doctor", doctorRouter);
 app.use("/api/cheating",cheatingRouter);
+app.use("/api/booking", bookingRouter);
+app.use('/api/facilities', facilityRoutes);
 export { app };

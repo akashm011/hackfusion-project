@@ -2,6 +2,8 @@
 import dotenv from "dotenv";
 import connectDB from "./db/index.js";
 import { app } from "./app.js";
+import './scheduler.js'; // This will start the cron job.
+
 // dotenv.config({
 //   path: "./.env",
 // });
