@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "base64url": "^3.0.1",
     "backend": "file:",
     "bcryptjs": "^3.0.0",
     "cookie-parser": "^1.4.7",

@@ -5,7 +5,7 @@ import Admin from "../models/admin.model.js";
 import Doctor from "../models/doctor.model.js";
 
 // Generic Auth Middleware
-const verifyToken = async (req, res, next, allowedRoles) => {
+export const verifyToken = async (req, res, next, allowedRoles) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
 
@@ -16,14 +16,16 @@ const verifyToken = async (req, res, next, allowedRoles) => {
         .json({ message: "Access Denied. No token provided." });
 
 
+
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     let user = null;
     
 
-    if (allowedRoles.includes("student")){
-        user = await Student.findById(decoded.studentId);
-    }
+
+    if (allowedRoles.includes("student"))
+      user = await Student.findById(decoded.studentId);
+
     if (allowedRoles.includes("faculty") && !user)
       user = await Faculty.findById(decoded.id);
     if (allowedRoles.includes("admin") && !user)
@@ -31,8 +33,6 @@ const verifyToken = async (req, res, next, allowedRoles) => {
     if (allowedRoles.includes("doctor") && !user)
       user = await Doctor.findById(decoded.id);
 
-    
-    
     if (!user || !allowedRoles.includes(user.role)) {
       return res
         .status(403)
@@ -46,24 +46,6 @@ const verifyToken = async (req, res, next, allowedRoles) => {
   }
 };
 
-// // Student Authentication Middleware
-// export const verifyStudent = (req, res, next) =>
-//   verifyToken(req, res, next, req.user.role);
-
-// export const verifyDoctor = (req, res, next) =>
-//   verifyToken(req, res, next, req.user.role);
-
-// // Faculty Authentication Middleware
-// export const verifyFaculty = (req, res, next) =>
-//   verifyToken(req, res, next, req.user.role);
-
-// // Admin Authentication Middleware
-// export const verifyAdmin = (req, res, next) =>
-//   verifyToken(req, res, next, req.user.role);
-
-// // Middleware to allow only Faculty & Admin
-// export const verifyFacultyOrAdmin = (req, res, next) =>
-//   verifyToken(req, res, next, req.user.role);
 
 // Middleware for each role
 export const verifyStudent = (req, res, next) =>
