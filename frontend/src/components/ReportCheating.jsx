@@ -37,11 +37,14 @@ const ReportCheating = () => {
   const handleDelete = async () => {
     if (!recordToDelete) return;
 
+    
+
     try {
+      const tok = localStorage.getItem("token");
       await axios.delete(
         `http://localhost:3000/api/cheating/delete/${recordToDelete._id}`,
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: { Authorization: `Bearer ${tok}` },
         }
       );
 
@@ -89,6 +92,7 @@ const ReportCheating = () => {
             onClose={() => setShowAddForm(false)}
             onSubmit={fetchRecords}
           />
+          
         )}
 
         {recordToDelete && role === "faculty" && (
@@ -137,28 +141,28 @@ const ReportCheating = () => {
           </div>
         </div>
 
-        <div className="bg-white shadow rounded-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+        <div className="w-full bg-white shadow rounded-lg">
+          <div className="w-full">
+            <table className="w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th className="w-1/5 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase truncate">
                     Student Name
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th className="w-1/5 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase truncate">
                     Exam Name
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th className="w-1/5 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase truncate">
                     Reason
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th className="w-1/5 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase truncate">
                     Reported By
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th className="w-1/5 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase truncate">
                     Date
                   </th>
                   {role === "faculty" && (
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    <th className="w-16 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase truncate">
                       Actions
                     </th>
                   )}
@@ -167,25 +171,27 @@ const ReportCheating = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredData.map((record) => (
                   <tr key={record._id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="px-4 py-4 text-sm font-medium text-gray-900 truncate">
                       {record.student.name}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-4 py-4 text-sm text-gray-500 truncate">
                       {record.examName}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {record.reason}
+                    <td className="px-4 py-4 text-sm text-gray-500">
+                      <p className="">
+                        {record.reason}
+                      </p>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-4 py-4 text-sm text-gray-500 truncate">
                       {record.reportedBy.name}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-4 py-4 text-sm text-gray-500 truncate">
                       {new Date(record.createdAt).toLocaleDateString()}
                     </td>
                     {role === "faculty" && (
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-4 py-4 text-sm text-gray-500">
                         <button
-                          onClick={() => setRecordToDelete(record)} // Corrected handler
+                          onClick={() => setRecordToDelete(record)}
                           className="text-red-600 hover:text-red-800"
                         >
                           <Trash2 className="h-5 w-5" />

@@ -12,6 +12,7 @@ import AdminComplaints from "../../components/Admin-Comp/AdminComplaints";
 
 import ManageApplication from "../../components/ManageApplication";
 import BudgetComponent from "../../components/Budget";
+import ManageBudget from "../../components/Admin-Comp/ManageApproval";
 
 function AdminHome() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -35,15 +36,18 @@ function AdminHome() {
     case "bookings":
       ContentComponent = <AdminManageBookings />;
       break;
-    case "approvals":
-      ContentComponent = <AdminApprovals />;
-      break;
+    // case "approvals":
+    //   ContentComponent = <AdminApprovals />;
+    //   break;
     case "application":
       ContentComponent = <ManageApplication />;
       break;
      case "budget":
         ContentComponent=<BudgetComponent/>
         break;
+    case "approvals":
+      ContentComponent=<ManageBudget/>
+      break;
     case "settings":
       ContentComponent = <AdminSettings />;
       break;

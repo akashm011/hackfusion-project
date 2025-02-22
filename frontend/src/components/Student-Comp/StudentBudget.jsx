@@ -27,6 +27,7 @@ function LoadingSpinner() {
 
 function BudgetForm({ onClose, onSubmit }) {
   const [formData, setFormData] = useState({
+    title:"To ",
     category: "event",
     amount: "",
     allocated_by: {
@@ -56,6 +57,7 @@ function BudgetForm({ onClose, onSubmit }) {
       }
   
       const submitData = {
+        title:formData.title,
         category: formData.category,
         amount: Number(formData.amount),
         allocated_by: userId, 
@@ -73,6 +75,7 @@ function BudgetForm({ onClose, onSubmit }) {
       if (response.data.success) {
         onSubmit(response.data.data);
         setFormData({
+          title:"To",
           category: "event",
           amount: "",
           allocated_by: { model: "Faculty" },
@@ -95,6 +98,23 @@ function BudgetForm({ onClose, onSubmit }) {
         <h2 className="text-xl font-bold mb-4">Create New Budget</h2>
         {error && <ErrorMessage message={error} />}
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+              Title
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded"
+              placeholder="Enter Title"
+              value={formData.title}
+          
+              
+              disabled={isSubmitting}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
+            />
+          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Category
@@ -385,6 +405,7 @@ export default function BudgetComponent() {
               }`}
               onClick={() => setSelectedBudget(budget)}
             >
+              <p>Title: {budget.title}</p>
               <p className="text-sm text-gray-600">
                 Category: {budget.category}
               </p>

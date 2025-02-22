@@ -4,7 +4,7 @@ import {
   getCheatingRecords,
   deleteCheatingRecord,
 } from "../controllers/cheating.controller.js";
-import { verifyFaculty, verifyAdmin } from "../middlewares/auth.middlware.js";
+import { verifyFaculty, verifyFacultyOrAdmin } from "../middlewares/auth.middlware.js";
 import { upload } from "../middlewares/multer.middlware.js";
 
 const router = express.Router();
@@ -16,6 +16,6 @@ router.post("/add", verifyFaculty,upload.single("proof"), addCheatingRecord);
 router.get("/all", getCheatingRecords);
 
 // Route to delete a cheating record (Only admin can delete)
-router.delete("/delete/:id", verifyAdmin, deleteCheatingRecord);
+router.delete("/delete/:id", verifyFacultyOrAdmin, deleteCheatingRecord);
 
 export default router;

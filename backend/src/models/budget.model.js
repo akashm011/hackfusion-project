@@ -9,6 +9,10 @@ const budgetSchema = new Schema(
       enum: ["event", "department", "mess"],
       required: true,
     },
+    title:{
+      type:String,
+      default:"For work perpose"
+    },
     amount: {
       type: Number,
       required: true,
@@ -22,6 +26,11 @@ const budgetSchema = new Schema(
       type: String,
       required: true,
       enum: ["Faculty", "Student"],
+    },
+    status: {
+      type: String,
+      enum: ["approved", "rejected", "pending"],
+      default: "pending",
     },
     // allocated_at: {
     //   type: Date,

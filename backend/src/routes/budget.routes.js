@@ -6,11 +6,13 @@ import {
   createExpenseLog,
   getExpenseLogs,
   getAllExpenseLogs,
+  updateBudgetStatus,
 } from "../controllers/budget.controller.js";
 import {
   verifyToken,
   verifyFacultyOrAdmin,
   verifyStudentOrFaculty,
+  verifyAdmin,
 } from "../middlewares/auth.middlware.js";
 
 import { upload } from "../middlewares/multer.middlware.js";
@@ -44,5 +46,7 @@ router.post("/:id", verifyFacultyOrAdmin, createExpenseLog);
 router.get("/:id/expenses", verifyStudentFacultyAdmin, getExpenseLogs);
 
 router.get("/expenses/all", verifyStudentFacultyAdmin, getAllExpenseLogs);
+
+router.put("/update-status", verifyStudentFacultyAdmin, updateBudgetStatus);
 
 export default router;

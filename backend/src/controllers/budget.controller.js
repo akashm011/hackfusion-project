@@ -25,7 +25,7 @@ export const createBudget = async (req, res) => {
     const userId = req.user._id; // Ensure req.user is properly set
     console.log("Authenticated User ID:", userId);
 
-    const { category, amount, allocatedByModel } = req.body;
+    const {title, category, amount, allocatedByModel } = req.body;
 
     if (!category || !amount || !allocatedByModel) {
       return res
@@ -34,6 +34,7 @@ export const createBudget = async (req, res) => {
     }
 
     const budget = new Budget({
+      title,
       category,
       amount,
       allocated_by: userId,
@@ -173,5 +174,26 @@ export const getAllExpenseLogs = async (req, res) => {
   } catch (error) {
     console.error("Error in getAllExpenseLogs:", error);
     return res.status(500).json({ success: false, error: "Server error" });
+  }
+};
+
+
+export const updateBudgetStatus = async (req, res) => {
+  try {
+    const { id, status } = req.body; // Get ID and status from request body
+
+    if (!["approved", "rejected"].includes(status)) {
+      return res.status(400).json({ error: "Invalid status" });
+    }
+
+    const budget = await Budget.findById(id);
+    if (!budget) return res.status(404).json({ error: "Budget not found" });
+
+    budget.status = status;
+    await budget.save();
+
+    res.status(200).json({ message: `Budget successfully ${status}`, budget });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

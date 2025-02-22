@@ -75,14 +75,23 @@ export const getCheatingRecords = async (req, res) => {
 // Delete a cheating record (Admin only)
 export const deleteCheatingRecord = async (req, res) => {
   try {
-    if (req.user.role !== "admin") {
-      return res.status(403).json({ error: "Only admins can delete cheating records" });
+    // Check if user is neither admin nor faculty
+    if (req.user.role !== "admin" && req.user.role !== "faculty") {
+      return res.status(403).json({ 
+        error: "Only admins and faculty can delete cheating records" 
+      });
     }
 
     const { id } = req.params;
     await CheatingRecord.findByIdAndDelete(id);
-    res.status(200).json({ message: "Cheating record deleted successfully" });
+    
+    res.status(200).json({ 
+      message: "Cheating record deleted successfully" 
+    });
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error("Error deleting record:", error);
+    res.status(500).json({ 
+      error: "Internal Server Error" 
+    });
   }
 };
